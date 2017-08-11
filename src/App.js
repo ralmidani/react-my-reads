@@ -1,23 +1,13 @@
 import React from 'react';
-import {getAll, update} from './BooksAPI';
 import './App.css';
+import {getAll, update} from './BooksAPI';
+import {Route} from 'react-router-dom';
 import Search from './components/Search';
-import BookShelf from './components/BookShelf';
+import BookShelves from './components/BookShelves';
 
-class BooksApp extends React.Component {
+class App extends React.Component {
   state = {
-    /**
-    * TODO: Instead of using this state variable to keep track of which page
-    * we're on, use the URL in the browser's address bar. This will ensure that
-    * users can use the browser's back and forward buttons to navigate between
-    * pages, as well as provide a good URL they can bookmark and share.
-    */
-    showSearchPage: true
-  }
-
-  constructor(props) {
-    super(props);
-    getAll().then(books => this.setState({books}));
+    books: []
   }
 
   shelves = [
@@ -26,6 +16,10 @@ class BooksApp extends React.Component {
     {apiTitle: 'read', displayTitle: 'Read'},
     {apiTitle: 'none', displayTitle: 'None'}
   ]
+
+  componentDidMount() {
+    getAll().then(books => this.setState({books}));
+  }
 
   moveBook = (book, shelf) => {
     update(book, shelf)
@@ -40,41 +34,21 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? 
-          <Search shelves={this.shelves}
-                  goBack={() => this.setState({showSearchPage: false})} 
-                  moveBook={this.moveBook}
+        <Route exact path="/" render={() => 
+          <BookShelves shelves={this.shelves}
+                       moveBook={this.moveBook}
+                       books={this.state.books}
           />
-        : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                {this.shelves.filter(shelf => shelf.apiTitle !== 'none')
-                             .map(shelf => 
-                  <BookShelf key={shelf.apiTitle} 
-                             title={shelf.displayTitle}
-                             shelves={this.shelves} 
-                             books={this.state.books.filter(book =>
-                               book.shelf === shelf.apiTitle)
-                             }
-                             moveBook={this.moveBook}
-
-                  />
-                )}
-              </div>
-            </div>
-            <div className="open-search">
-              <a onClick={() => 
-                this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
-          </div>
-        )}
+        } />
+        <Route exact path="/search" render={() => 
+          <Search shelves={this.shelves}
+                  moveBook={this.moveBook}
+                  shelvedBooks={this.state.books}
+          />
+        } />
       </div>
     );
   }
 }
 
-export default BooksApp
+export default App

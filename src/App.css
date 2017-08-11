@@ -8,6 +8,13 @@ body, .app {
   background: white;
 }
 
+/* shared */
+
+h3.empty-notice {
+  color: red;
+  text-align: center;
+}
+
 /* main page */
 
 .list-books-title {

@@ -31,14 +31,16 @@ class Book extends React.Component {
                       onChange={this.handleShelfChange}
               >
                 <option value="none" disabled>Move to...</option>
-                {this.props.shelves.map(shelf => 
-                <option
-                  key={shelf.apiTitle}
-                  value={shelf.apiTitle}
-                >
-                  {shelf.displayTitle}
-                </option>
-                )}
+                {
+                  this.props.shelves.map(shelf => 
+                    <option
+                      key={shelf.apiTitle}
+                      value={shelf.apiTitle}
+                    >
+                      {shelf.displayTitle}
+                    </option>
+                  )
+                }
               </select>
             </div>
           </div>
