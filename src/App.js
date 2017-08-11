@@ -5,19 +5,21 @@ import Search from './components/Search';
 import BookShelf from './components/BookShelf';
 
 class BooksApp extends React.Component {
+  state = {
+    /**
+    * TODO: Instead of using this state variable to keep track of which page
+    * we're on, use the URL in the browser's address bar. This will ensure that
+    * users can use the browser's back and forward buttons to navigate between
+    * pages, as well as provide a good URL they can bookmark and share.
+    */
+    showSearchPage: true
+  }
+
   constructor(props) {
     super(props);
     getAll().then(books => this.setState({books}));
   }
-  state = {
-  /**
-   * TODO: Instead of using this state variable to keep track of which page
-   * we're on, use the URL in the browser's address bar. This will ensure that
-   * users can use the browser's back and forward buttons to navigate between
-   * pages, as well as provide a good URL they can bookmark and share.
-   */
-    showSearchPage: true
-  }
+
   shelves = [
     {apiTitle: 'currentlyReading', displayTitle: 'Currently Reading'}, 
     {apiTitle: 'wantToRead', displayTitle: 'Want to Read'},
@@ -39,7 +41,10 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? 
-          <Search goBack={() => this.setState({showSearchPage: false})} /> 
+          <Search shelves={this.shelves}
+                  goBack={() => this.setState({showSearchPage: false})} 
+                  moveBook={this.moveBook}
+          />
         : (
           <div className="list-books">
             <div className="list-books-title">
