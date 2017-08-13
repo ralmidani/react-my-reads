@@ -6,7 +6,7 @@ This project demonstrates my knowledge of React (with ES6), including utilizing 
 
 ## How to Run the Project
 
-1. Clone the repository: git clone https://github.com/ralmidani/react-my-reads.git
+1. Clone the repository: `git clone https://github.com/ralmidani/react-my-reads.git`
 2. Change into the new directory: `cd react-my-reads`
 3. Install the dependencies: `yarn install` or `npm install`
 3. Run it: `yarn start` or `npm start`
